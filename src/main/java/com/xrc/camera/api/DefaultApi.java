@@ -353,7 +353,7 @@ public class DefaultApi {
      * @return SettingInfo
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public SettingInfo settingsSettingGet(String setting) throws RestClientException {
+    public SettingInfo settingsSettingGet(Setting setting) throws RestClientException {
         Object postBody = null;
         // verify the required parameter 'setting' is set
         if (setting == null) {
@@ -390,7 +390,7 @@ public class DefaultApi {
      * @param setting The setting parameter
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void settingsSettingPut(SettingValue body, String setting) throws RestClientException {
+    public void settingsSettingPut(SettingValue body, Setting setting) throws RestClientException {
         Object postBody = body;
         // verify the required parameter 'body' is set
         if (body == null) {
