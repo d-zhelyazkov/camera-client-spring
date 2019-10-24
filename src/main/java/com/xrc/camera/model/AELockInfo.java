@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 
 
-public class AELockInfo extends BaseSettingInfo {
+public class AELockInfo extends BaseSettingInfo<Boolean> {
   @JsonProperty("value")
   private Boolean value = null;
 

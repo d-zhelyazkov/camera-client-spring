@@ -26,7 +26,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 
 
-public class FocusModeInfo extends BaseSettingInfo {
+public class FocusModeInfo extends BaseSettingInfo<FocusMode> {
   @JsonProperty("value")
   private FocusMode value = null;
 

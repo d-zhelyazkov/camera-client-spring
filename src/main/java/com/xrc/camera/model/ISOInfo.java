@@ -25,7 +25,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 
 
-public class ISOInfo extends BaseSettingInfo {
+public class ISOInfo extends BaseSettingInfo<Integer> {
   @JsonProperty("value")
   private Integer value = null;
 

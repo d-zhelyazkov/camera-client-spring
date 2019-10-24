@@ -26,7 +26,7 @@ import java.math.BigDecimal;
  */
 
 
-public class AECompensationInfo extends BaseSettingInfo {
+public class AECompensationInfo extends BaseSettingInfo<BigDecimal> {
   @JsonProperty("value")
   private BigDecimal value = null;
 

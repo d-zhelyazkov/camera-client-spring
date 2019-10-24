@@ -12,7 +12,6 @@
 
 package com.xrc.camera.model;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -25,7 +24,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 
 
-public abstract class BaseSettingInfo<T> {
+public abstract class BaseSettingInfo<T> implements ISettingInfo<T> {
   @JsonProperty("setting")
   private Setting setting = null;
 
@@ -68,9 +67,6 @@ public abstract class BaseSettingInfo<T> {
     this.editable = editable;
   }
 
-  public abstract T getValue();
-
-  public abstract List<T> getValues();
 
   @Override
   public boolean equals(java.lang.Object o) {
