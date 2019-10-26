@@ -1,6 +1,5 @@
 package com.xrc.camera.api;
 
-import com.xrc.camera.RFC3339DateFormat;
 import com.xrc.camera.auth.ApiKeyAuth;
 import com.xrc.camera.auth.Authentication;
 import com.xrc.camera.auth.HttpBasicAuth;
@@ -37,18 +36,14 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TimeZone;
 
 @Component("com.xrc.camera.api.ApiClient")
 @EnableConfigurationProperties(CameraProperties.class)
@@ -80,8 +75,6 @@ public class ApiClient {
 
     private HttpStatus statusCode;
     private MultiValueMap<String, String> responseHeaders;
-    
-    private DateFormat dateFormat;
 
     public ApiClient(
             CameraProperties cameraProperties) {
@@ -93,12 +86,6 @@ public class ApiClient {
     }
     
     protected void init() {
-        // Use RFC3339 format for date and datetime.
-        // See http://xml2rfc.ietf.org/public/rfc/html/rfc3339.html#anchor14
-        this.dateFormat = new RFC3339DateFormat();
-
-        // Use UTC as the default time zone.
-        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Set default User-Agent.
         setUserAgent("Java-SDK");
@@ -286,42 +273,6 @@ public class ApiClient {
     }
 
     /**
-     * Get the date format used to parse/format date parameters.
-     * @return DateFormat format
-     */
-    public DateFormat getDateFormat() {
-        return dateFormat;
-    }
-
-    /**
-     * Set the date format used to parse/format date parameters.
-     * @param dateFormat Date format
-     * @return API client
-     */
-    public ApiClient setDateFormat(DateFormat dateFormat) {
-        this.dateFormat = dateFormat;
-        return this;
-    }
-    
-    /**
-     * Parse the given string into Date object.
-     */
-    public Date parseDate(String str) {
-        try {
-            return dateFormat.parse(str);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Format the given Date object into string.
-     */
-    public String formatDate(Date date) {
-        return dateFormat.format(date);
-    }
-
-    /**
      * Format the given parameter object into string.
      * @param param the object to convert
      * @return String the parameter represented as a String
@@ -329,8 +280,6 @@ public class ApiClient {
     public String parameterToString(Object param) {
         if (param == null) {
             return "";
-        } else if (param instanceof Date) {
-            return formatDate( (Date) param);
         } else if (param instanceof Collection) {
             StringBuilder b = new StringBuilder();
             for(Object o : (Collection<?>) param) {
