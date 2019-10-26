@@ -33,9 +33,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.HttpClientErrorException;
 
-import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
+
+import static com.xrc.camera.api.Constants.IMAGE_FILE_DATE_FORMAT;
 
 
 /**
@@ -49,10 +54,15 @@ public class DefaultApiTest {
     private DefaultApi api;
 
     @Test
-    public void imageGetTest() {
-        File image = api.imageGet();
-        System.out.println("Image file: " + image);
-        //ToDo fix and enhance test
+    public void imageGetTest() throws IOException {
+        byte[] image = api.imageGet();
+        System.out.println(String.format("Image size: %dB", image.length));
+        Files.write(
+                Paths.get(IMAGE_FILE_DATE_FORMAT.format(new Date()) + ".jpg"),
+                image);
+
+        Assert.assertNotNull(image);
+        Assert.assertTrue(image.length > 0);
     }
 
     @Test
