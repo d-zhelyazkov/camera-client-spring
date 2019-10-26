@@ -1,8 +1,13 @@
-package com.xrc.camera;
+package com.xrc.camera.api;
 
+import com.xrc.camera.RFC3339DateFormat;
+import com.xrc.camera.auth.ApiKeyAuth;
+import com.xrc.camera.auth.Authentication;
+import com.xrc.camera.auth.HttpBasicAuth;
+import com.xrc.camera.auth.OAuth;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,10 +35,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,12 +50,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TimeZone;
 
-import com.xrc.camera.auth.Authentication;
-import com.xrc.camera.auth.HttpBasicAuth;
-import com.xrc.camera.auth.ApiKeyAuth;
-import com.xrc.camera.auth.OAuth;
-
-@Component("com.xrc.camera.ApiClient")
+@Component("com.xrc.camera.api.ApiClient")
+@EnableConfigurationProperties(CameraProperties.class)
 public class ApiClient {
     public enum CollectionFormat {
         CSV(","), TSV("\t"), SSV(" "), PIPES("|"), MULTI(null);
@@ -64,11 +65,13 @@ public class ApiClient {
             return StringUtils.collectionToDelimitedString(collection, separator);
         }
     }
-    
+
+    private final CameraProperties cameraProperties;
+
     private boolean debugging = false;
     
     private HttpHeaders defaultHeaders = new HttpHeaders();
-    
+
     private String basePath = "/camera";
 
     private RestTemplate restTemplate;
@@ -80,14 +83,12 @@ public class ApiClient {
     
     private DateFormat dateFormat;
 
-    public ApiClient() {
+    public ApiClient(
+            CameraProperties cameraProperties) {
+
+        this.cameraProperties = cameraProperties;
+
         this.restTemplate = buildRestTemplate();
-        init();
-    }
-    
-    @Autowired
-    public ApiClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
         init();
     }
     
@@ -493,8 +494,14 @@ public class ApiClient {
      */
     public <T> T invokeAPI(String path, HttpMethod method, MultiValueMap<String, String> queryParams, Object body, HttpHeaders headerParams, MultiValueMap<String, Object> formParams, List<MediaType> accept, MediaType contentType, String[] authNames, ParameterizedTypeReference<T> returnType) throws RestClientException {
         updateParamsForAuth(authNames, queryParams, headerParams);
-        
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(basePath).path(path);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme("HTTP")
+                .host(cameraProperties.getHost())
+                .port(cameraProperties.getPort())
+                .path(basePath)
+                .path(path);
+
         if (queryParams != null) {
             builder.queryParams(queryParams);
         }

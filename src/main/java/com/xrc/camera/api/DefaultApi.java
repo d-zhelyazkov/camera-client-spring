@@ -1,16 +1,9 @@
 package com.xrc.camera.api;
 
-import com.xrc.camera.ApiClient;
-
 import com.xrc.camera.model.AECompensationInfo;
 import com.xrc.camera.model.AECompensationValue;
 import com.xrc.camera.model.AELockInfo;
 import com.xrc.camera.model.AELockValue;
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.xrc.camera.model.FocusModeInfo;
 import com.xrc.camera.model.FocusModeValue;
 import com.xrc.camera.model.ISOInfo;
@@ -18,30 +11,27 @@ import com.xrc.camera.model.ISOValue;
 import com.xrc.camera.model.Setting;
 import com.xrc.camera.model.SettingInfo;
 import com.xrc.camera.model.SettingValue;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component("com.xrc.camera.api.DefaultApi")
 public class DefaultApi {
     private ApiClient apiClient;
-
-    public DefaultApi() {
-        this(new ApiClient());
-    }
 
     @Autowired
     public DefaultApi(ApiClient apiClient) {
