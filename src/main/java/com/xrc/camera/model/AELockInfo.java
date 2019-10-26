@@ -42,7 +42,7 @@ public class AELockInfo extends BaseSettingInfo {
    * @return value
   **/
   @Schema(required = true, description = "")
-  public Boolean isValue() {
+  public Boolean getValue() {
     return value;
   }
 

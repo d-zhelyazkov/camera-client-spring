@@ -1,16 +1,9 @@
 package com.xrc.camera.api;
 
-import com.xrc.camera.ApiClient;
-
 import com.xrc.camera.model.AECompensationInfo;
 import com.xrc.camera.model.AECompensationValue;
 import com.xrc.camera.model.AELockInfo;
 import com.xrc.camera.model.AELockValue;
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.xrc.camera.model.FocusModeInfo;
 import com.xrc.camera.model.FocusModeValue;
 import com.xrc.camera.model.ISOInfo;
@@ -18,30 +11,27 @@ import com.xrc.camera.model.ISOValue;
 import com.xrc.camera.model.Setting;
 import com.xrc.camera.model.SettingInfo;
 import com.xrc.camera.model.SettingValue;
-
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component("com.xrc.camera.api.DefaultApi")
 public class DefaultApi {
     private ApiClient apiClient;
-
-    public DefaultApi() {
-        this(new ApiClient());
-    }
 
     @Autowired
     public DefaultApi(ApiClient apiClient) {
@@ -63,7 +53,7 @@ public class DefaultApi {
      * @return File
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public File imageGet() throws RestClientException {
+    public byte[] imageGet() throws RestClientException {
         Object postBody = null;
         String path = UriComponentsBuilder.fromPath("/image").build().toUriString();
         
@@ -80,7 +70,7 @@ public class DefaultApi {
 
         String[] authNames = new String[] {  };
 
-        ParameterizedTypeReference<File> returnType = new ParameterizedTypeReference<File>() {};
+        ParameterizedTypeReference<byte[]> returnType = new ParameterizedTypeReference<byte[]>() {};
         return apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
     /**
@@ -363,7 +353,7 @@ public class DefaultApi {
      * @return SettingInfo
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public SettingInfo settingsSettingGet(String setting) throws RestClientException {
+    public SettingInfo settingsSettingGet(Setting setting) throws RestClientException {
         Object postBody = null;
         // verify the required parameter 'setting' is set
         if (setting == null) {
@@ -400,7 +390,7 @@ public class DefaultApi {
      * @param setting The setting parameter
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void settingsSettingPut(SettingValue body, String setting) throws RestClientException {
+    public void settingsSettingPut(SettingValue body, Setting setting) throws RestClientException {
         Object postBody = body;
         // verify the required parameter 'body' is set
         if (body == null) {

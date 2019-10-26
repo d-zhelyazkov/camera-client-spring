@@ -30,7 +30,10 @@ hs_err_pid*
 target
 .gradle
 build
+out
 
 \.idea/
 
 *.iml
+
+*.jpg

@@ -1,8 +1,12 @@
-package com.xrc.camera;
+package com.xrc.camera.api;
 
+import com.xrc.camera.auth.ApiKeyAuth;
+import com.xrc.camera.auth.Authentication;
+import com.xrc.camera.auth.HttpBasicAuth;
+import com.xrc.camera.auth.OAuth;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,27 +34,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TimeZone;
 
-import com.xrc.camera.auth.Authentication;
-import com.xrc.camera.auth.HttpBasicAuth;
-import com.xrc.camera.auth.ApiKeyAuth;
-import com.xrc.camera.auth.OAuth;
-
-@Component("com.xrc.camera.ApiClient")
+@Component("com.xrc.camera.api.ApiClient")
+@EnableConfigurationProperties(CameraProperties.class)
 public class ApiClient {
     public enum CollectionFormat {
         CSV(","), TSV("\t"), SSV(" "), PIPES("|"), MULTI(null);
@@ -64,11 +60,13 @@ public class ApiClient {
             return StringUtils.collectionToDelimitedString(collection, separator);
         }
     }
-    
+
+    private final CameraProperties cameraProperties;
+
     private boolean debugging = false;
     
     private HttpHeaders defaultHeaders = new HttpHeaders();
-    
+
     private String basePath = "/camera";
 
     private RestTemplate restTemplate;
@@ -77,27 +75,17 @@ public class ApiClient {
 
     private HttpStatus statusCode;
     private MultiValueMap<String, String> responseHeaders;
-    
-    private DateFormat dateFormat;
 
-    public ApiClient() {
+    public ApiClient(
+            CameraProperties cameraProperties) {
+
+        this.cameraProperties = cameraProperties;
+
         this.restTemplate = buildRestTemplate();
         init();
     }
     
-    @Autowired
-    public ApiClient(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-        init();
-    }
-    
     protected void init() {
-        // Use RFC3339 format for date and datetime.
-        // See http://xml2rfc.ietf.org/public/rfc/html/rfc3339.html#anchor14
-        this.dateFormat = new RFC3339DateFormat();
-
-        // Use UTC as the default time zone.
-        this.dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         // Set default User-Agent.
         setUserAgent("Java-SDK");
@@ -285,42 +273,6 @@ public class ApiClient {
     }
 
     /**
-     * Get the date format used to parse/format date parameters.
-     * @return DateFormat format
-     */
-    public DateFormat getDateFormat() {
-        return dateFormat;
-    }
-
-    /**
-     * Set the date format used to parse/format date parameters.
-     * @param dateFormat Date format
-     * @return API client
-     */
-    public ApiClient setDateFormat(DateFormat dateFormat) {
-        this.dateFormat = dateFormat;
-        return this;
-    }
-    
-    /**
-     * Parse the given string into Date object.
-     */
-    public Date parseDate(String str) {
-        try {
-            return dateFormat.parse(str);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Format the given Date object into string.
-     */
-    public String formatDate(Date date) {
-        return dateFormat.format(date);
-    }
-
-    /**
      * Format the given parameter object into string.
      * @param param the object to convert
      * @return String the parameter represented as a String
@@ -328,8 +280,6 @@ public class ApiClient {
     public String parameterToString(Object param) {
         if (param == null) {
             return "";
-        } else if (param instanceof Date) {
-            return formatDate( (Date) param);
         } else if (param instanceof Collection) {
             StringBuilder b = new StringBuilder();
             for(Object o : (Collection<?>) param) {
@@ -493,8 +443,14 @@ public class ApiClient {
      */
     public <T> T invokeAPI(String path, HttpMethod method, MultiValueMap<String, String> queryParams, Object body, HttpHeaders headerParams, MultiValueMap<String, Object> formParams, List<MediaType> accept, MediaType contentType, String[] authNames, ParameterizedTypeReference<T> returnType) throws RestClientException {
         updateParamsForAuth(authNames, queryParams, headerParams);
-        
-        final UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(basePath).path(path);
+
+        UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
+                .scheme("HTTP")
+                .host(cameraProperties.getHost())
+                .port(cameraProperties.getPort())
+                .path(basePath)
+                .path(path);
+
         if (queryParams != null) {
             builder.queryParams(queryParams);
         }
