@@ -53,7 +53,7 @@ public class DefaultApi {
      * @return File
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public File imageGet() throws RestClientException {
+    public byte[] imageGet() throws RestClientException {
         Object postBody = null;
         String path = UriComponentsBuilder.fromPath("/image").build().toUriString();
         
@@ -70,7 +70,7 @@ public class DefaultApi {
 
         String[] authNames = new String[] {  };
 
-        ParameterizedTypeReference<File> returnType = new ParameterizedTypeReference<File>() {};
+        ParameterizedTypeReference<byte[]> returnType = new ParameterizedTypeReference<byte[]>() {};
         return apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
     }
     /**
