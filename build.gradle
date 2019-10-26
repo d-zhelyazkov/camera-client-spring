@@ -22,6 +22,27 @@ jar {
     enabled = true
 }
 
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
+sourceSets {
+    integrationTest {
+        java.srcDir file('src/integration-test/java')
+        resources.srcDir file('src/integration-test/resources')
+        compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
+        runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
+    }
+}
+
+task integrationTest(type: Test) {
+    group 'Verification'
+    description 'Runs the integration tests.'
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
 ext {
     swagger_annotations_version = "2.0.0"
     jackson_version = "2.10.0.pr3"
@@ -38,7 +59,7 @@ dependencies {
 
     compile "org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version"
 
-    testCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
+    integrationTestCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
 
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:$spring_boot_version"
 
