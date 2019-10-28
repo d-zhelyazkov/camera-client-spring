@@ -1,4 +1,4 @@
-package com.xrc.camera.api;
+package com.xrc.camera;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
