@@ -3,5 +3,5 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**value** | [**BigDecimal**](BigDecimal.md) |  | 
-**values** | [**java.util.List&lt;BigDecimal&gt;**](BigDecimal.md) |  | 
+**value** | [**Float**](Float.md) |  | 
+**values** | [**java.util.List&lt;Float&gt;**](Float.md) |  | 

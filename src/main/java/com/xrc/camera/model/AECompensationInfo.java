@@ -20,20 +20,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.xrc.camera.model.BaseSettingInfo;
 import com.xrc.camera.model.Setting;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
 /**
  * AECompensationInfo
  */
 
 
-public class AECompensationInfo extends BaseSettingInfo<BigDecimal> {
+public class AECompensationInfo extends BaseSettingInfo<Float> {
   @JsonProperty("value")
-  private BigDecimal value = null;
+  private Float value = null;
 
   @JsonProperty("values")
-  private java.util.List<BigDecimal> values = new java.util.ArrayList<>();
+  private java.util.List<Float> values = new java.util.ArrayList<>();
 
-  public AECompensationInfo value(BigDecimal value) {
+  public AECompensationInfo value(Float value) {
     this.value = value;
     return this;
   }
@@ -43,20 +42,20 @@ public class AECompensationInfo extends BaseSettingInfo<BigDecimal> {
    * @return value
   **/
   @Schema(required = true, description = "")
-  public BigDecimal getValue() {
+  public Float getValue() {
     return value;
   }
 
-  public void setValue(BigDecimal value) {
+  public void setValue(Float value) {
     this.value = value;
   }
 
-  public AECompensationInfo values(java.util.List<BigDecimal> values) {
+  public AECompensationInfo values(java.util.List<Float> values) {
     this.values = values;
     return this;
   }
 
-  public AECompensationInfo addValuesItem(BigDecimal valuesItem) {
+  public AECompensationInfo addValuesItem(Float valuesItem) {
     this.values.add(valuesItem);
     return this;
   }
@@ -66,11 +65,11 @@ public class AECompensationInfo extends BaseSettingInfo<BigDecimal> {
    * @return values
   **/
   @Schema(required = true, description = "")
-  public java.util.List<BigDecimal> getValues() {
+  public java.util.List<Float> getValues() {
     return values;
   }
 
-  public void setValues(java.util.List<BigDecimal> values) {
+  public void setValues(java.util.List<Float> values) {
     this.values = values;
   }
 

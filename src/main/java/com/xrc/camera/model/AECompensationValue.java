@@ -18,7 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.math.BigDecimal;
 /**
  * AECompensationValue
  */
@@ -26,9 +25,9 @@ import java.math.BigDecimal;
 
 public class AECompensationValue {
   @JsonProperty("value")
-  private BigDecimal value = null;
+  private Float value = null;
 
-  public AECompensationValue value(BigDecimal value) {
+  public AECompensationValue value(Float value) {
     this.value = value;
     return this;
   }
@@ -38,11 +37,11 @@ public class AECompensationValue {
    * @return value
   **/
   @Schema(required = true, description = "")
-  public BigDecimal getValue() {
+  public Float getValue() {
     return value;
   }
 
-  public void setValue(BigDecimal value) {
+  public void setValue(Float value) {
     this.value = value;
   }
 
