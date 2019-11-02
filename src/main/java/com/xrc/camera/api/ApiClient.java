@@ -6,6 +6,7 @@ import com.xrc.camera.auth.HttpBasicAuth;
 import com.xrc.camera.auth.OAuth;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -239,7 +240,8 @@ public class ApiClient {
         defaultHeaders.add(name, value);
         return this;
     }
-    
+
+    @Value("${client.debug}")
     public void setDebugging(boolean debugging) {
         List<ClientHttpRequestInterceptor> currentInterceptors = this.restTemplate.getInterceptors();
         if(debugging) {
