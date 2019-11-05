@@ -2,3 +2,4 @@ camera.host: 192.168.0.136
 camera.port: 9001
 
 client.debug: false
+client.timeout: 10000

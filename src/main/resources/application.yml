@@ -2,3 +2,4 @@ camera.host: #set_me
 camera.port: #set_me
 
 client.debug: false
+client.timeout: 10000

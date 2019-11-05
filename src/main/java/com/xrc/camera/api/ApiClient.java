@@ -22,6 +22,7 @@ import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -65,7 +66,9 @@ public class ApiClient {
     private final CameraProperties cameraProperties;
 
     private boolean debugging = false;
-    
+
+    private int timeout = 10_000;
+
     private HttpHeaders defaultHeaders = new HttpHeaders();
 
     private String basePath = "/camera";
@@ -264,6 +267,11 @@ public class ApiClient {
             }
         }
         this.debugging = debugging;
+    }
+
+    @Value("${client.timeout}")
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 
     /**
@@ -509,10 +517,15 @@ public class ApiClient {
      * @return RestTemplate
      */
     protected RestTemplate buildRestTemplate() {
-        RestTemplate restTemplate = new RestTemplate();
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setReadTimeout(timeout);
+        requestFactory.setConnectTimeout(timeout);
+
         // This allows us to read the response more than once - Necessary for debugging.
-        restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(restTemplate.getRequestFactory()));
-        return restTemplate;
+        BufferingClientHttpRequestFactory bufferedRequestFactory =
+                new BufferingClientHttpRequestFactory(requestFactory);
+
+        return new RestTemplate(bufferedRequestFactory);
     }
 
     /**
