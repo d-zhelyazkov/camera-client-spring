@@ -3,3 +3,5 @@ camera.port: #set_me
 
 client.debug: false
 client.timeout: 10000
+
+camera.settings.cache: true
