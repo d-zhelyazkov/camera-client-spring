@@ -5,3 +5,5 @@ client.debug: false
 client.timeout: 10000
 
 camera.settings.cache: true
+
+test.iso.maxValueError: 300
