@@ -48,6 +48,7 @@ ext {
     swagger_annotations_version = "2.0.0"
     jackson_version = "2.10.0.pr3"
     spring_boot_version = "2.1.8.RELEASE"
+    spring_retry_version = "1.2.4.RELEASE"
     utilsVersion = "1.0-SNAPSHOT"
 }
 
@@ -61,6 +62,8 @@ dependencies {
     compile "com.xrc:java-utils:${utilsVersion}"
 
     compile "org.springframework.boot:spring-boot-starter-websocket:$spring_boot_version"
+    compile "org.springframework.retry:spring-retry:$spring_retry_version"
+    runtime "org.springframework.boot:spring-boot-starter-aop:$spring_boot_version"
 
     integrationTestCompile "org.springframework.boot:spring-boot-starter-test:$spring_boot_version"
 
