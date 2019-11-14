@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Gets or Sets FocusMode
  */
 public enum FocusMode {
-  MANUAL("MANUAL"),
   AUTO("AUTO"),
   MACRO("MACRO"),
   CONTINUOUS("CONTINUOUS"),
