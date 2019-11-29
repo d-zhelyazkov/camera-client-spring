@@ -3,6 +3,7 @@ package com.xrc.camera.setting;
 import com.xrc.camera.model.Setting;
 import com.xrc.camera.setting.util.ComparableSettingTestHandler;
 import com.xrc.camera.setting.util.SettingTestHandler;
+import com.xrc.lang.Integers;
 import com.xrc.lang.Numbers;
 import com.xrc.util.Range;
 import org.junit.FixMethodOrder;
@@ -37,7 +38,17 @@ public class ISOTest extends CameraSettingTestBase<Integer> {
 
     public boolean validateValue(Integer value) throws UnsupportedSettingException {
         ExISOSetting isoSetting = getISOSetting();
+
         Range<Integer> valuesRange = isoSetting.getValuesRange();
+        int minValue = valuesRange.getLowerBound();
+        int maxValue = valuesRange.getHigherBound();
+
+        int maxAnalogSensitivity = isoSetting.getMaxAnalogValue();
+        int k = maxValue / maxAnalogSensitivity;
+        k = Integers.nextPowerOfTwo(k);
+        maxValue = maxAnalogSensitivity * k;
+
+        valuesRange = new Range<>(minValue, maxValue);
         return valuesRange.isInRange(value);
 
     }
