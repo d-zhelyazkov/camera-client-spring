@@ -1,9 +1,9 @@
 package com.xrc.camera;
 
+import com.xrc.awt.Dimension;
 import com.xrc.awt.Dimensions;
 import org.junit.Assert;
 
-import java.awt.Dimension;
 import java.awt.image.RenderedImage;
 
 public class ImageVerifier {

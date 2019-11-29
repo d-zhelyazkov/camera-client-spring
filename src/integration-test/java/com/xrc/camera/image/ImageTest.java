@@ -1,5 +1,6 @@
 package com.xrc.camera.image;
 
+import com.xrc.awt.Dimension;
 import com.xrc.awt.Dimensions;
 import com.xrc.camera.Camera;
 import com.xrc.camera.Constants;
@@ -12,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.imageio.ImageIO;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Date;
