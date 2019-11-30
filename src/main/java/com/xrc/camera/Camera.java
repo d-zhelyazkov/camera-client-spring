@@ -1,10 +1,12 @@
 package com.xrc.camera;
 
 import com.xrc.camera.api.DefaultApi;
+import com.xrc.camera.model.AEMode;
 import com.xrc.camera.model.FocusMode;
 import com.xrc.camera.model.Setting;
 import com.xrc.camera.setting.AutoExposureCompensationSetting;
 import com.xrc.camera.setting.AutoExposureLockSetting;
+import com.xrc.camera.setting.AutoExposureModeSetting;
 import com.xrc.camera.setting.CachedCameraSetting;
 import com.xrc.camera.setting.CameraSetting;
 import com.xrc.camera.setting.ExISOSetting;
@@ -46,6 +48,10 @@ public class Camera {
         }
     }
 
+    public CameraSetting<AEMode> getAEModeSetting() {
+        return getSetting(Setting.AE_MODE);
+    }
+
     public CameraSetting<Float> getAECompensationSetting() {
         return getSetting(Setting.AE_COMPENSATION);
     }
@@ -77,6 +83,9 @@ public class Camera {
         switch (setting) {
             case ISO:
                 cameraSetting = new ISOSetting(swaggerApi);
+                break;
+            case AE_MODE:
+                cameraSetting = new AutoExposureModeSetting(swaggerApi);
                 break;
             case AE_LOCK:
                 cameraSetting = new AutoExposureLockSetting(swaggerApi);
