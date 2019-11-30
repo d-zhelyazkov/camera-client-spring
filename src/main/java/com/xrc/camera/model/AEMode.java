@@ -18,18 +18,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets Setting
+ * Gets or Sets AEMode
  */
-public enum Setting {
-  ISO("ISO"),
-  FOCUS_MODE("FOCUS_MODE"),
-  AE_MODE("AE_MODE"),
-  AE_COMPENSATION("AE_COMPENSATION"),
-  AE_LOCK("AE_LOCK");
+public enum AEMode {
+  OFF("OFF"),
+  ON("ON");
 
   private String value;
 
-  Setting(String value) {
+  AEMode(String value) {
     this.value = value;
   }
 
@@ -44,8 +41,8 @@ public enum Setting {
   }
 
   @JsonCreator
-  public static Setting fromValue(String text) {
-    for (Setting b : Setting.values()) {
+  public static AEMode fromValue(String text) {
+    for (AEMode b : AEMode.values()) {
       if (String.valueOf(b.value).equals(text)) {
         return b;
       }

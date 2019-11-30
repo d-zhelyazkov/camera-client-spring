@@ -4,6 +4,8 @@ import com.xrc.camera.model.AECompensationInfo;
 import com.xrc.camera.model.AECompensationValue;
 import com.xrc.camera.model.AELockInfo;
 import com.xrc.camera.model.AELockValue;
+import com.xrc.camera.model.AEModeInfo;
+import com.xrc.camera.model.AEModeValue;
 import com.xrc.camera.model.FocusModeInfo;
 import com.xrc.camera.model.FocusModeValue;
 import com.xrc.camera.model.ISOInfo;
@@ -188,6 +190,67 @@ public class DefaultApi {
         final String[] contentTypes = { 
             "application/json"
          };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] {  };
+
+        ParameterizedTypeReference<Void> returnType = new ParameterizedTypeReference<Void>() {};
+        apiClient.invokeAPI(path, HttpMethod.PUT, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     *
+     *
+     * <p><b>200</b> - Status 200
+     * <p><b>404</b> - The specified setting is not available.
+     * @return AEModeInfo
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public AEModeInfo settingsAEMODEGet() throws RestClientException {
+        Object postBody = null;
+        String path = UriComponentsBuilder.fromPath("/settings/AE_MODE").build().toUriString();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = {
+                "application/json"
+        };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = {  };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] {  };
+
+        ParameterizedTypeReference<AEModeInfo> returnType = new ParameterizedTypeReference<AEModeInfo>() {};
+        return apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     *
+     *
+     * <p><b>204</b> - The setting has been successfully updated.
+     * <p><b>400</b> - The value of the setting cannot be edited or invalid value provided.
+     * <p><b>404</b> - The specified setting is not available.
+     * @param body The body parameter
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public void settingsAEMODEPut(AEModeValue body) throws RestClientException {
+        Object postBody = body;
+        // verify the required parameter 'body' is set
+        if (body == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'body' when calling settingsAEMODEPut");
+        }
+        String path = UriComponentsBuilder.fromPath("/settings/AE_MODE").build().toUriString();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = {  };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = {
+                "application/json"
+        };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
