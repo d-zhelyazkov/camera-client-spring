@@ -10,7 +10,6 @@ import com.xrc.camera.setting.CameraSetting;
 import com.xrc.camera.setting.ExISOSetting;
 import com.xrc.camera.setting.FocusModeSetting;
 import com.xrc.camera.setting.ISOSetting;
-import com.xrc.camera.setting.UnsupportedSettingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -47,19 +46,19 @@ public class Camera {
         }
     }
 
-    public CameraSetting<Float> getAECompensationSetting() throws UnsupportedSettingException {
+    public CameraSetting<Float> getAECompensationSetting() {
         return getSetting(Setting.AE_COMPENSATION);
     }
 
-    public CameraSetting<Boolean> getAELockSetting() throws UnsupportedSettingException {
+    public CameraSetting<Boolean> getAELockSetting() {
         return getSetting(Setting.AE_LOCK);
     }
 
-    public CameraSetting<FocusMode> getFocusModeSetting() throws UnsupportedSettingException {
+    public CameraSetting<FocusMode> getFocusModeSetting() {
         return getSetting(Setting.FOCUS_MODE);
     }
 
-    public ExISOSetting getISOSetting() throws UnsupportedSettingException {
+    public ExISOSetting getISOSetting() {
         CameraSetting<Integer> isoSetting = getSetting(Setting.ISO);
         return new ExISOSetting(isoSetting);
     }
@@ -72,8 +71,7 @@ public class Camera {
         return swaggerApi;
     }
 
-    public  <T> CameraSetting<T> getSetting(Setting setting) throws UnsupportedOperationException {
-        checkSettingSupported(setting);
+    public <T> CameraSetting<T> getSetting(Setting setting) {
 
         CameraSetting<?> cameraSetting;
         switch (setting) {
@@ -103,8 +101,4 @@ public class Camera {
 
     }
 
-    private void checkSettingSupported(Setting setting) throws UnsupportedSettingException {
-        if (!supportedSettings.contains(setting))
-            throw new UnsupportedSettingException("Setting not supported.");
-    }
 }
