@@ -7,6 +7,8 @@ client.timeout: 10000
 camera.settings.cache: true
 
 test.iso.maxValueError: 300
+test.iso.manual.maxValueError: 10
+
 
 test.selfie-robot.iterations: 5
 test.selfie-robot.delay: 1000
