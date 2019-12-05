@@ -2,10 +2,12 @@ package com.xrc.camera.selfierobot;
 
 
 import com.xrc.camera.Camera;
-import com.xrc.camera.setting.CameraSetting;
 import com.xrc.camera.Constants;
 import com.xrc.camera.ImageVerifier;
+import com.xrc.camera.model.AEMode;
 import com.xrc.camera.model.FocusMode;
+import com.xrc.camera.setting.CameraSetting;
+import com.xrc.camera.util.SettingsBackup;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,24 +40,24 @@ public class SelfieRobotTestScenario {
     private SelfieRobotTestProperties properties;
 
     private CameraSetting<FocusMode> focusMode;
-    private FocusMode initialFocusModeValue;
-
     private CameraSetting<Boolean> aeLock;
-    private boolean initialAELockValue;
-
     private CameraSetting<Float> aeCompensation;
-    private Float initialAECompensationValue;
+    private CameraSetting<AEMode> aeMode;
+    private CameraSetting<Integer> iso;
+
+    private SettingsBackup settingsBackup;
 
     @Before
     public void before() {
         focusMode = camera.getFocusModeSetting();
-        initialFocusModeValue = focusMode.getValue();
-
         aeLock = camera.getAELockSetting();
-        initialAELockValue = aeLock.getValue();
-
         aeCompensation = camera.getAECompensationSetting();
-        initialAECompensationValue = aeCompensation.getValue();
+        aeMode = camera.getAEModeSetting();
+        iso = camera.getISOSetting();
+
+        settingsBackup = new SettingsBackup(
+                focusMode, iso, aeMode, aeLock, aeCompensation
+        );
     }
 
     @Test
@@ -89,7 +91,7 @@ public class SelfieRobotTestScenario {
 
     @After
     public void after() {
-        restoreInitialSettings();
+        restoreSettings();
     }
 
 
@@ -99,7 +101,7 @@ public class SelfieRobotTestScenario {
         BufferedImage image = camera.getImage();
         log.info("Process image obtained.");
 
-        restoreInitialSettings();
+        restoreSettings();
 
         return image;
     }
@@ -112,13 +114,16 @@ public class SelfieRobotTestScenario {
 
         aeLock.setValue(true);
 
+        aeMode.setValue(AEMode.OFF);
+
+        Integer lowestIso = iso.getValues().get(0);
+        iso.setValue(lowestIso);
+
         log.info("Optimal settings set.");
     }
 
-    private void restoreInitialSettings() {
-        focusMode.setValue(initialFocusModeValue);
-        aeLock.setValue(initialAELockValue);
-        aeCompensation.setValue(initialAECompensationValue);
+    private void restoreSettings() {
+        settingsBackup.restore();
 
         log.info("Settings restored.");
     }
