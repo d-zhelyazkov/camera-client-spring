@@ -10,8 +10,10 @@ import com.xrc.camera.setting.AutoExposureModeSetting;
 import com.xrc.camera.setting.CachedCameraSetting;
 import com.xrc.camera.setting.CameraSetting;
 import com.xrc.camera.setting.ExISOSetting;
+import com.xrc.camera.setting.ExShutterSpeedSetting;
 import com.xrc.camera.setting.FocusModeSetting;
 import com.xrc.camera.setting.ISOSetting;
+import com.xrc.camera.setting.ShutterSpeedSetting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -69,6 +71,11 @@ public class Camera {
         return new ExISOSetting(isoSetting);
     }
 
+    public ExShutterSpeedSetting getShutterSpeedSetting() {
+        CameraSetting<Long> shutterSpeedSetting = getSetting(Setting.SHUTTER_SPEED);
+        return new ExShutterSpeedSetting(shutterSpeedSetting);
+    }
+
     public Set<Setting> getSupportedSettings() {
         return supportedSettings;
     }
@@ -95,6 +102,9 @@ public class Camera {
                 break;
             case FOCUS_MODE:
                 cameraSetting = new FocusModeSetting(swaggerApi);
+                break;
+            case SHUTTER_SPEED:
+                cameraSetting = new ShutterSpeedSetting(swaggerApi);
                 break;
             default:
                 throw new UnsupportedOperationException("Method not implemented for setting " + setting);
