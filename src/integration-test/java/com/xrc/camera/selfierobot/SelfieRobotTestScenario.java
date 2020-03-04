@@ -7,6 +7,7 @@ import com.xrc.camera.ImageVerifier;
 import com.xrc.camera.model.AEMode;
 import com.xrc.camera.model.FocusMode;
 import com.xrc.camera.setting.CameraSetting;
+import com.xrc.camera.setting.ExShutterSpeedSetting;
 import com.xrc.camera.util.SettingsBackup;
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +45,7 @@ public class SelfieRobotTestScenario {
     private CameraSetting<Float> aeCompensation;
     private CameraSetting<AEMode> aeMode;
     private CameraSetting<Integer> iso;
+    private ExShutterSpeedSetting shutterSpeed;
 
     private SettingsBackup settingsBackup;
 
@@ -54,9 +56,10 @@ public class SelfieRobotTestScenario {
         aeCompensation = camera.getAECompensationSetting();
         aeMode = camera.getAEModeSetting();
         iso = camera.getISOSetting();
+        shutterSpeed = camera.getShutterSpeedSetting();
 
         settingsBackup = new SettingsBackup(
-                focusMode, iso, aeMode, aeLock, aeCompensation
+                focusMode, iso, shutterSpeed, aeMode, aeLock, aeCompensation
         );
     }
 
@@ -118,6 +121,9 @@ public class SelfieRobotTestScenario {
 
         Integer lowestIso = iso.getValues().get(0);
         iso.setValue(lowestIso);
+
+        Long fastestShutter = shutterSpeed.getValuesRange().getLowerBound();
+        shutterSpeed.setValue(fastestShutter);
 
         log.info("Optimal settings set.");
     }
