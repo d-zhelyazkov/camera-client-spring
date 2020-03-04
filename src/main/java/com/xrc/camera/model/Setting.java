@@ -25,7 +25,9 @@ public enum Setting {
   FOCUS_MODE("FOCUS_MODE"),
   AE_MODE("AE_MODE"),
   AE_COMPENSATION("AE_COMPENSATION"),
-  AE_LOCK("AE_LOCK");
+  AE_LOCK("AE_LOCK"),
+  SHUTTER_SPEED("SHUTTER_SPEED"),
+  ;
 
   private String value;
 

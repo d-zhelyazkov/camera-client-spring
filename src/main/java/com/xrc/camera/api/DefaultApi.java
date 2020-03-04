@@ -13,6 +13,8 @@ import com.xrc.camera.model.ISOValue;
 import com.xrc.camera.model.Setting;
 import com.xrc.camera.model.SettingInfo;
 import com.xrc.camera.model.SettingValue;
+import com.xrc.camera.model.ShutterSpeedInfo;
+import com.xrc.camera.model.ShutterSpeedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +28,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -214,8 +215,8 @@ public class DefaultApi {
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
         final String[] accepts = {
-                "application/json"
-        };
+            "application/json"
+         };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
         final String[] contentTypes = {  };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
@@ -249,8 +250,8 @@ public class DefaultApi {
         final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
         final String[] contentTypes = {
-                "application/json"
-        };
+            "application/json"
+         };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
 
         String[] authNames = new String[] {  };
@@ -390,14 +391,71 @@ public class DefaultApi {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'body' when calling settingsISOPut");
         }
         String path = UriComponentsBuilder.fromPath("/settings/ISO").build().toUriString();
-        
+
         final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
         final HttpHeaders headerParams = new HttpHeaders();
         final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
 
         final String[] accepts = {  };
         final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
-        final String[] contentTypes = { 
+        final String[] contentTypes = {
+            "application/json"
+         };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] {  };
+
+        ParameterizedTypeReference<Void> returnType = new ParameterizedTypeReference<Void>() {};
+        apiClient.invokeAPI(path, HttpMethod.PUT, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     *
+     *
+     * <p><b>200</b> - Status 200
+     * <p><b>404</b> - The specified setting is not available.
+     * @return ShutterSpeedInfo
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public ShutterSpeedInfo settingsSHUTTERSPEEDGet() throws RestClientException {
+        Object postBody = null;
+        String path = UriComponentsBuilder.fromPath("/settings/SHUTTER_SPEED").build().toUriString();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = {
+            "application/json"
+         };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = {  };
+        final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
+
+        String[] authNames = new String[] {  };
+
+        ParameterizedTypeReference<ShutterSpeedInfo> returnType = new ParameterizedTypeReference<ShutterSpeedInfo>() {};
+        return apiClient.invokeAPI(path, HttpMethod.GET, queryParams, postBody, headerParams, formParams, accept, contentType, authNames, returnType);
+    }
+    /**
+     *
+     *
+     * <p><b>204</b> - The setting has been successfully updated.
+     * <p><b>400</b> - The value of the setting cannot be edited or invalid value provided.
+     * <p><b>404</b> - The specified setting is not available.
+     * @param body The body parameter
+     * @throws RestClientException if an error occurs while attempting to invoke the API
+     */
+    public void settingsSHUTTERSPEEDPut(ShutterSpeedValue body) throws RestClientException {
+        Object postBody = body;
+        String path = UriComponentsBuilder.fromPath("/settings/SHUTTER_SPEED").build().toUriString();
+
+        final MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<String, String>();
+        final HttpHeaders headerParams = new HttpHeaders();
+        final MultiValueMap<String, Object> formParams = new LinkedMultiValueMap<String, Object>();
+
+        final String[] accepts = {  };
+        final List<MediaType> accept = apiClient.selectHeaderAccept(accepts);
+        final String[] contentTypes = {
             "application/json"
          };
         final MediaType contentType = apiClient.selectHeaderContentType(contentTypes);
